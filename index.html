@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>PEAK DROP — 3D スノーボード・ビッグエア</title>
+<meta name="description" content="高台からジャンプして飛距離を競う3Dスノーボードゲーム。トリック、コンボ、コース解放、実績収集などやり込み要素満載。" />
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="src/style.css" />
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js"
+  }
+}
+</script>
+</head>
+<body>
+  <canvas id="game-canvas"></canvas>
+
+  <div id="ui-root">
+
+    <!-- ===================== TITLE SCREEN ===================== -->
+    <section id="screen-title" class="screen active">
+      <div class="panel title-panel">
+        <h1>PEAK <span class="accent">DROP</span></h1>
+        <p class="subtitle">高台から飛び出せ。空を舞え。距離を刻め。</p>
+        <div class="menu-buttons">
+          <button id="btn-play" class="btn btn-primary">プレイ</button>
+          <button id="btn-garage" class="btn">ガレージ（強化）</button>
+          <button id="btn-achievements" class="btn">実績</button>
+          <button id="btn-howto" class="btn">遊び方</button>
+        </div>
+        <div class="title-stats" id="title-stats"></div>
+      </div>
+    </section>
+
+    <!-- ===================== HOW TO PLAY ===================== -->
+    <section id="screen-howto" class="screen">
+      <div class="panel">
+        <h2>遊び方</h2>
+        <div class="howto-grid">
+          <div><b>助走中</b><br>↓ / S : タック（加速）<br>↑ / W : 体を起こす（減速・安定）</div>
+          <div><b>踏切</b><br>スペース : ジャンプ（縁ギリギリで押すほど飛距離ボーナス）</div>
+          <div><b>空中</b><br>← → / A D : 回転（スピン）<br>↑ ↓ / W S : バク宙・宙返り（フリップ）<br>Shift : グラブ（保持でスタイル点）</div>
+          <div><b>着地</b><br>着地の瞬間に回転が揃っているほどクリーン着地。<br>揃わないとクラッシュして飛距離が減る。</div>
+        </div>
+        <button class="btn btn-primary btn-back">戻る</button>
+      </div>
+    </section>
+
+    <!-- ===================== COURSE SELECT ===================== -->
+    <section id="screen-course" class="screen">
+      <div class="panel wide">
+        <h2>コース選択</h2>
+        <div id="course-list" class="course-list"></div>
+        <button class="btn btn-back-course">戻る</button>
+      </div>
+    </section>
+
+    <!-- ===================== GARAGE / SHOP ===================== -->
+    <section id="screen-garage" class="screen">
+      <div class="panel wide">
+        <h2>ガレージ <span id="coin-display" class="coin-display"></span></h2>
+        <div class="tabs">
+          <button class="tab-btn active" data-tab="boards">ボード</button>
+          <button class="tab-btn" data-tab="trails">トレイル</button>
+        </div>
+        <div id="garage-boards" class="garage-grid"></div>
+        <div id="garage-trails" class="garage-grid" style="display:none"></div>
+        <button class="btn btn-primary btn-back">戻る</button>
+      </div>
+    </section>
+
+    <!-- ===================== ACHIEVEMENTS ===================== -->
+    <section id="screen-achievements" class="screen">
+      <div class="panel wide">
+        <h2>実績 <span id="ach-progress"></span></h2>
+        <div id="achievements-list" class="achievements-list"></div>
+        <button class="btn btn-primary btn-back">戻る</button>
+      </div>
+    </section>
+
+    <!-- ===================== HUD (in-run) ===================== -->
+    <section id="screen-hud" class="screen hud">
+      <div class="hud-top">
+        <div class="hud-box"><span class="hud-label">速度</span><span id="hud-speed">0</span> km/h</div>
+        <div class="hud-box"><span class="hud-label">高度</span><span id="hud-height">0</span> m</div>
+        <div class="hud-box phase-box"><span id="hud-phase">助走</span></div>
+      </div>
+      <div id="trick-feed"></div>
+      <div id="timing-bar-wrap">
+        <div id="timing-bar"><div id="timing-marker"></div><div id="timing-sweet"></div></div>
+        <div class="timing-caption">スペースで踏切！</div>
+      </div>
+      <div id="crash-banner">クラッシュ！！</div>
+    </section>
+
+    <!-- ===================== RESULTS ===================== -->
+    <section id="screen-results" class="screen">
+      <div class="panel">
+        <h2 id="results-title">RESULT</h2>
+        <div class="results-distance"><span id="results-distance">0</span><span class="unit">m</span></div>
+        <div id="results-breakdown" class="results-breakdown"></div>
+        <div id="results-new-record" class="new-record">🏆 新記録！</div>
+        <div id="results-achievements"></div>
+        <div class="menu-buttons">
+          <button id="btn-retry" class="btn btn-primary">もう一度</button>
+          <button id="btn-to-title" class="btn">タイトルへ</button>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>
